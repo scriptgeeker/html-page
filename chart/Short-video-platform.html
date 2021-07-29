@@ -1,0 +1,21 @@
+
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>短视频平台用户渗透率环形图</title></head>
+<body><div style="margin: auto;width: 900px"><canvas id="my-chart"></canvas></div></body>
+<script src="Chart_2.7.2.js"></script>
+<script type="text/javascript">
+new Chart(document.getElementById("my-chart"), {
+    type: "doughnut",
+    data: {
+        labels: ['秒拍', '快手', '西瓜视频', '美拍', '火山小视频', '好看视频', '抖音', '土豆视频', '凤凰视频', '快视频'],
+        datasets:[{"label": "2017\u7b2c4\u5b63\u5ea6", "data": ["53.42", "47.2", "42.5", "36.24", "26.19", "22.55", "22.14", "15.92", "10.9", "8.26"], "backgroundColor": ["rgba(0, 188, 212, 0.5)", "rgba(76, 175, 80, 0.5)", "rgba(63, 81, 181, 0.5)", "rgba(0, 150, 136, 0.5)", "rgba(255, 87, 34, 0.5)", "rgba(255, 235, 59, 0.5)", "rgba(255, 193, 7, 0.5)", "rgba(244, 67, 54, 0.5)", "rgba(233, 30, 99, 0.5)", "rgba(255, 152, 0, 0.5)", "rgba(3, 169, 244, 0.5)", "rgba(205, 220, 57, 0.5)", "rgba(103, 58, 183, 0.5)", "rgba(156, 39, 176, 0.5)", "rgba(33, 150, 243, 0.5)", "rgba(139, 195, 74, 0.5)"]}]
+    },
+    options: {
+        title: {display:true,text:"短视频平台用户渗透率环形图",position:"bottom"},
+        layout: {padding:30},scales: {yAxes:[{ticks:{beginAtZero:true}}]
+        }
+    }
+});
+</script>
+</html>

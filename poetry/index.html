@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>古诗词鉴赏</title>
+    <link rel="stylesheet" href="poetry.css">
+</head>
+
+<body>
+<div class="navbar">
+    <header>
+        <h1>古诗词鉴赏</h1>
+        <h2>古诗文经典传承</h2>
+    </header>
+    <form>
+        <input id="input-search" type="text" autocomplete="off">
+        <select id="select-type">
+            <option value="title">标题</option>
+            <option value="dynasty">朝代</option>
+            <option value="author">作者</option>
+            <option value="sentence">名句</option>
+            <option value="tag">标签</option>
+            <option value="content">全文</option>
+        </select>
+        <button id="btn-search" type="button">搜索</button>
+    </form>
+</div>
+<table>
+    <thead>
+    <tr>
+        <th>诗文</th>
+        <th>朝代</th>
+        <th>作者</th>
+        <th>名句</th>
+        <th>标签</th>
+    </tr>
+    </thead>
+    <tbody id="table-poetry">
+    </tbody>
+</table>
+
+<div class="pagination">
+    <button id="btn-page-pre">上一页</button>
+    <input id="input-page" type="number" min="1" value="1">
+    <button id="btn-page-next">下一页</button>
+</div>
+
+</body>
+<script src="poetry.js"></script>
+<script src="data.js"></script>
+
+</html>

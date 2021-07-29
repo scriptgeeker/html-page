@@ -1,0 +1,73 @@
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="items.js"></script>
+</head>
+
+<body>
+    <table class="dataintable">
+        <tbody>
+            <tr>
+                <th>游戏名称</th>
+                <th>下载地址</th>
+                <th>提取码</th>
+                <th>解压码</th>
+            </tr>
+
+            <tr style="display: none;">
+                <td>逃离塔科夫</td>
+                <td>
+                    <a href="https://pan.baidu.com/s/16938w6X6l7hA5XZEtn52mw#j3a9" target="_blank">
+                        https://pan.baidu.com/s/16938w6X6l7hA5XZEtn52mw
+                    </a>
+                </td>
+                <td>j3a9</td>
+                <td>267845</td>
+            </tr>
+
+        </tbody>
+    </table>
+    <script>
+
+        let url = window.location.href;
+        let search = "";
+        if (url.lastIndexOf("#") !== -1) {
+            let index = url.lastIndexOf("#");
+            search = url.substr(index + 1);
+        }
+
+        let eTable = document.querySelector(".dataintable>tbody");
+        for (let item of items) {
+            if (item[2].indexOf(search) === -1) continue;
+            let game = new Game(item);
+            let eTr = document.createElement("tr");
+            eTr.innerHTML = (
+                `<td>${game.name}</td>` +
+                `<td><a href="${game.link}" target="_blank">${game.link}</a></td>` +
+                `<td>${game.code}</td>` +
+                `<td>${game.pswd}</td>` + `\n`
+            );
+            eTable.appendChild(eTr);
+        }
+
+        function Game(item) {
+            this.name = item[2];
+            this.link = item[0];
+            this.code = (() => {
+                let code = "";
+                let index = this.link.lastIndexOf("#");
+                if (index !== -1) {
+                    code = this.link.substr(index + 1)
+                }
+                return code;
+            })();
+            this.pswd = item[1];
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,158 @@
+* {
+    /*user-select: none;*/
+    font-family: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 100;
+    letter-spacing: 0.01em;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: #001dbb;
+}
+
+header {
+    margin: 0 auto;
+    padding-top: 20px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    background: #fff;
+    letter-spacing: 0.05em;
+}
+
+header h1 {
+    font-size: 300%;
+    font-weight: 100;
+    margin: 0;
+}
+
+header h2 {
+    font-size: 125%;
+    font-weight: 100;
+    line-height: 1.5;
+    margin: 0;
+    color: #666;
+    letter-spacing: -0.02em;
+}
+
+table {
+    width: 1200px;
+    margin: 0 auto;
+    border: 1px solid #cbcbcb;
+    border-collapse: collapse;
+    border-spacing: 0;
+    empty-cells: show;
+}
+
+table thead {
+    background-color: #e0e0e0;
+    color: #000;
+    text-align: left;
+    vertical-align: bottom;
+}
+
+table th,
+table td {
+    height: 34px;
+    padding: 0.5em 1em;
+    border-left: 1px solid #cbcbcb;
+    font-size: inherit;
+    margin: 0;
+    overflow: visible;
+}
+
+table tr:nth-child(2n-1) td {
+    background-color: #f2f2f2;
+}
+
+button {
+    display: inline-block;
+    zoom: 1;
+    white-space: nowrap;
+    vertical-align: middle;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    font-size: 100%;
+    padding: .5em 1em;
+    color: rgba(0, 0, 0, .8);
+    border: transparent;
+    background-color: #E6E6E6;
+    text-decoration: none;
+    border-radius: 2px;
+}
+
+input {
+    height: 38px;
+    padding: .5em .6em;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-shadow: inset 0 1px 3px #ddd;
+    border-radius: 4px;
+    vertical-align: middle;
+    box-sizing: border-box;
+}
+
+select {
+    display: block;
+    height: 38px;
+    line-height: 38px;
+    padding: 0 8px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    box-shadow: inset 0 1px 3px #ddd;
+    border-radius: 4px;
+    vertical-align: middle;
+    box-sizing: border-box;
+}
+
+option {
+    display: block;
+    white-space: pre;
+}
+
+.pagination {
+    width: 400px;
+    margin: 30px auto;
+    user-select: none;
+}
+
+.pagination input {
+    margin: 0 20px;
+}
+
+.navbar {
+    max-width: 1200px;
+    min-width: 820px;
+    margin: 0 auto;
+    user-select: none;
+}
+
+.navbar header h2 {
+    padding-left: 10px;
+    padding-top: 30px;
+}
+
+.navbar header,
+.navbar header h1,
+.navbar header h2 {
+    float: left;
+}
+
+.navbar form {
+    padding: 50px 0 8px 0;
+    float: right;
+}
+
+.navbar form input,
+.navbar form select,
+.navbar form button {
+    margin-left: 2px;
+    float: left;
+}

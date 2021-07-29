@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Boin Space - Free Image Hsoting</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free image hosting and sharing service, upload pictures.">
+    <meta name="ossinfo" content="img-hostoss-cn-hongkongLTAIt3vBfiyhf89tgKpRp8OsuS6EMWvwGwMDejhwve6AAA">
+    <link rel="shortcut icon" href="https://boin.space/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+    <style>
+        * {
+            user-select: none;
+        }
+
+        #main-content {
+            margin-top: 2rem;
+        }
+
+        #preview-area,
+        .collapsible-body {
+            background-position: 0 0, 10px 10px;
+            background-size: 20px 20px;
+            background-image: linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%, #eee 100%),
+            linear-gradient(45deg, #eee 25%, white 25%, white 75%, #eee 75%, #eee 100%);
+        }
+
+        #image-preview {
+            min-height: 16rem;
+        }
+
+        .progress {
+            margin: 0;
+        }
+
+        .card-action span {
+            margin: 7px 0;
+            max-width: 60%;
+        }
+
+        .card-action span.new:after {
+            content: "" !important;
+        }
+
+        .collapsible-body {
+            padding: 0.1rem;
+            overflow: hidden;
+        }
+
+        .collapsible-body img {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar-fixed red lighten-1">
+    <div class="container">
+        <div class="nav-wrapper">
+            <a class="brand-logo" href="https://boin.space">Boin Space</a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="javascript:void(0);">Free</a></li>
+                <li><a href="javascript:void(0);">Image</a></li>
+                <li><a href="javascript:void(0);">Hosting</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<input class="hide" id="select-image-btn" type="file" name="image" accept="image/*">
+<div id="main-content" class="container">
+    <div class="row">
+        <div class="col s12 l6">
+            <div class="card z-depth-2">
+                <div id="preview-area" class="card-image">
+                    <img id="image-preview" class="responsive-img materialboxed">
+                    <span class="card-title">Preview Image</span>
+                    <button type="button" id="browse-image-btn"
+                            class="btn-floating btn-large halfway-fab waves-effect waves-light red lighten-1 scale-transition">
+                        <i class="material-icons">add</i>
+                    </button>
+                </div>
+                <div class="card-content">
+                    <p>Complete freedom, you can upload any pictures.</p>
+                </div>
+                <div id="upload-progress" class="progress red lighten-4">
+                    <div class="determinate red" style="width: 0;"></div>
+                </div>
+                <div class="card-action">
+                    <button type="button" id="upload-image-btn"
+                            class="btn waves-effect waves-light red lighten-1 disabled">
+                        upload<i class="material-icons right">cloud_upload</i>
+                    </button>
+                    <span class="new badge right truncate scale-transition scale-out"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 l6">
+            <div id="image-item-template" class="hide">
+                <li>
+                    <div class="collapsible-header"></div>
+                    <div class="collapsible-body">
+                        <a target="_blank"><img class="responsive-img" title="open image in new tab"></a>
+                    </div>
+                </li>
+            </div>
+            <ul class="collapsible z-depth-2"></ul>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.10.0/js/md5.min.js"></script>
+<script src="https://gosspublic.alicdn.com/aliyun-oss-sdk-6.0.0.min.js"></script>
+<script>
+    (async function () {
+        const IMAGE_LIMIT_SIZE = 5; // unit MB
+        const ACCEPT_TYPE = { // Allowed file MIME values
+            "image/gif": ".gif",
+            "image/png": ".png",
+            "image/jpeg": ".jpg",
+            "image/bmp": ".bmp",
+            "image/webp": ".webp",
+        };
+        const OSSINFO = document.querySelector("meta[name=ossinfo]").getAttribute("content");
+        let client = new OSS({
+            bucket: OSSINFO.substr(0, 8),
+            region: OSSINFO.substr(8, 15),
+            accessKeyId: OSSINFO.substr(23, 16),
+            accessKeySecret: OSSINFO.substr(39, 30)
+        });
+        var imageObj = null; // HTML5 File Object
+        /* card module - left */
+        let selectBtn = document.querySelector("#select-image-btn");
+        let browseBtn = document.querySelector("#browse-image-btn");
+        let uploadBtn = document.querySelector("#upload-image-btn");
+        let previewImg = document.querySelector("#image-preview");
+        let matebox = document.querySelectorAll('.materialboxed');
+        /* collaps module - right */
+        let progress = document.querySelector("#upload-progress>div");
+        let cardtip = document.querySelector(".card-action span.new");
+        let collaps = document.querySelector(".collapsible");
+        let itemTemp = document.querySelector("#image-item-template>li");
+        /* materilize javascript component init*/
+        let collapsIns = M.Collapsible.init(collaps);
+        let mateboxIns = M.Materialbox.init(matebox);
+        /* Upload button countdown display */
+        window.countdown = async function (count) {
+            var timer = setInterval(function () {
+                if ((--count) > 0) {
+                    uploadBtn.innerHTML = count + "<i class='material-icons right'>alarm</i>";
+                    uploadBtn.className = "btn waves-effect waves-light red lighten-1 disabled pulse";
+                } else {
+                    cardtip.innerHTML = "Click the left button to upload image.";
+                    cardtip.className = "new badge right truncate scale-transition";
+                    uploadBtn.innerHTML = "upload<i class='material-icons right'>cloud_upload</i>";
+                    uploadBtn.className = "btn waves-effect waves-light red lighten-1";
+                    clearInterval(timer);
+                }
+            }, 1000);
+        };
+        /* Add the image information returned by the server to the top of the list */
+        window.unshift = async function (imgname, imghost) {
+            let imgitem = itemTemp.cloneNode(true);
+            let header = imgitem.querySelector(".collapsible-header");
+            let atag = imgitem.querySelector("a");
+            let imgtag = imgitem.querySelector("img");
+            header.innerText = imgname;
+            atag.setAttribute("href", imghost);
+            imgtag.setAttribute("src", imghost);
+            if (collaps.hasChildNodes()) {
+                collaps.insertBefore(imgitem, collaps.childNodes[0]);
+            } else {
+                collaps.appendChild(imgitem);
+            }
+            imgtag.onload = async function () {
+                collapsIns.open(0);
+            };
+        };
+        /* Get the current formatted date */
+        window.datestr = function (separator = "/") {
+            let now = new Date();
+            let year = String(now.getFullYear());
+            let month = String(now.getMonth() + 1);
+            let date = String(now.getDate());
+            year = (year.length === 2) ? year : year.substr(-2, 2);
+            month = (month.length === 2) ? month : "0" + month;
+            date = (date.length === 2) ? date : "0" + date;
+            return year + (separator) + month + (separator) + date;
+        };
+        /* Analog file upload button click event */
+        browseBtn.addEventListener("click", evt => {
+            let event = document.createEvent("MouseEvents");
+            event.initEvent("click");
+            selectBtn.dispatchEvent(event);
+        });
+        /* Monitor changes to uploaded images */
+        selectBtn.addEventListener("change", evt => {
+            let fileObj = selectBtn.files[0];
+            if (fileObj === undefined || fileObj === null) return false;
+            if (!ACCEPT_TYPE.hasOwnProperty(fileObj.type)) {
+                M.toast({html: "Only supports JPG, PNG, GIF, BMP, WEBP"});
+                return false;
+            }
+            imageObj = fileObj; // Assignment to global variables
+            let imgurl = window.URL.createObjectURL(imageObj); // Open the image as an object URL
+            previewImg.setAttribute("src", imgurl);
+            /* Set large size image upload time waiting */
+            if (imageObj.size > IMAGE_LIMIT_SIZE * 1024 * 1024) {
+                let waitsec = parseInt(imageObj.size / (1024 * 1024) - IMAGE_LIMIT_SIZE) * 10;
+                cardtip.innerText = "Image too large, please wait " + waitsec + " seconds.";
+                cardtip.className = "new badge red right truncate scale-transition";
+                uploadBtn.innerHTML = waitsec + "<i class='material-icons right'>alarm</i>";
+                uploadBtn.className = "btn waves-effect waves-light red lighten-1 disabled pulse";
+                window.countdown(waitsec);
+            } else {
+                cardtip.innerHTML = "Click the left button to upload image.";
+                cardtip.className = "new badge right truncate scale-transition";
+                uploadBtn.innerHTML = "upload<i class='material-icons right'>cloud_upload</i>";
+                uploadBtn.className = "btn waves-effect waves-light red lighten-1";
+            }
+            progress.style.width = "0%";
+        });
+        /* Image asynchronous upload implementation */
+        uploadBtn.addEventListener("click", async function () {
+            /* Image renaming rules, hashes of timestamps and file sizes */
+            let imgkey = window.datestr() + "/" + md5(imageObj.size).substr(0, 8) + ACCEPT_TYPE[imageObj.type];
+            try {
+                let result = await client.multipartUpload(imgkey, imageObj, {
+                    progress: async function (p) {
+                        progress.style.width = (p * 100) + "%";
+                    },
+                    mime: imageObj.type
+                });
+                window.unshift(imageObj.name, "https://boin.space/" + result.name);
+            } catch (err) {
+                M.toast({html: "Image upload failed"});
+            } finally {
+                cardtip.className = "new badge right truncate scale-transition scale-out";
+                uploadBtn.className = "btn waves-effect waves-light red lighten-1 disabled";
+                imageObj = null;
+            }
+        });
+    })();
+</script>
+</html>
