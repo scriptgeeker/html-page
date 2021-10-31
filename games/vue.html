@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <title>单机游戏合集</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+</head>
+
+<body>
+    <script>
+        var date_0 = Date.now();
+    </script>
+    <table id="games" v-bind:class="tableClass">
+        <tbody>
+            <tr>
+                <th>{{titles[0]}}
+                    <input type="text" placeholder="搜索" v-model="search">
+                </th>
+                <th>{{titles[1]}}</th>
+                <th>{{titles[2]}}</th>
+                <th>{{titles[3]}}</th>
+            </tr>
+            <tr v-for="(item,index) in items" v-show="showItem(index)">
+                <td>{{item[0]}}</td>
+                <td>
+                    <a v-bind:href="getUrl(index)" target="_blank">
+                        {{item[1] + "#" + item[2]}}
+                    </a>
+                </td>
+                <td>{{item[2]}}</td>
+                <td>{{item[3]}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <script src="items.js"></script>
+    <script>
+        let vm = new Vue({
+            el: "#games",
+            data: {
+                tableClass: "dataintable",
+                titles: ["游戏名称", "下载地址", "提取码", "解压码"],
+                list: items,
+                search: "",
+            },
+            computed: {
+                items: function () {
+                    let items = [];
+                    let list = this.list;
+                    for (let i = 0; i < list.length; i++) {
+                        items.push([
+                            list[i][2],
+                            list[i][0].slice(0, list[i][0].indexOf("#")),
+                            list[i][0].slice(list[i][0].indexOf("#")).slice(1,),
+                            list[i][1],
+                        ]);
+                    }
+                    return items;
+                }
+            },
+            methods: {
+                getUrl: function (index) {
+                    return this.items[index][1] + "#" + this.items[index][2];
+                },
+                showItem: function (index) {
+                    let search = this.search;
+                    let item = this.items[index];
+                    if (search === "") return true;
+                    if (item[0].indexOf(search) !== -1) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+        });
+    </script>
+    <script>
+        var date_1 = Date.now();
+        console.log("渲染时间：" + (date_1 - date_0) / 1000);
+    </script>
+</body>
+
+</html>

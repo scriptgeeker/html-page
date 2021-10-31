@@ -1,13 +1,16 @@
+<!DOCTYPE html>
 <html lang="zh">
 
 <head>
     <meta charset="UTF-8">
     <title>单机游戏合集</title>
     <link rel="stylesheet" href="style.css">
-    <script src="items.js"></script>
 </head>
 
 <body>
+    <script>
+        var date_0 = Date.now();
+    </script>
     <table class="dataintable">
         <tbody>
             <tr>
@@ -20,8 +23,8 @@
             </tr>
         </tbody>
     </table>
+    <script src="items.js"></script>
     <script>
-
         let eInput = document.querySelector("input[type=text]");
         let eTable = document.querySelector(".dataintable>tbody");
 
@@ -70,6 +73,10 @@
             this.pswd = item[1];
         }
 
+    </script>
+    <script>
+        var date_1 = Date.now();
+        console.log("渲染时间：" + (date_1 - date_0) / 1000);
     </script>
 </body>
 
