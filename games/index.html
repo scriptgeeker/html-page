@@ -28,36 +28,36 @@
         let eInput = document.querySelector("input[type=text]");
         let eTable = document.querySelector(".dataintable>tbody");
 
+        // fill_data_into_table
+        for (let item of items) {
+            let game = new Game(item);
+            let eTr = document.createElement("tr");
+            eTr.style.display = "table-row";
+            eTr.innerHTML = (
+                `<td>${game.name}</td>` +
+                `<td><a href="${game.link}" target="_blank">${game.link}</a></td>` +
+                `<td>${game.code}</td>` +
+                `<td>${game.pswd}</td>`
+            );
+            eTable.appendChild(eTr);
+        }
+
         let search = "";
-        empty_table_content();
-        fill_data_into_table();
+        let eList = eTable.querySelectorAll("tr");
 
         eInput.addEventListener("input", function (event) {
             search = eInput.value;
-            empty_table_content();
-            fill_data_into_table();
+            // set_table_tr_visibility
+            for (let i = 1; i < eList.length; i++) {
+                let eTr = eList[i];
+                let name = eTr.firstElementChild.textContent;
+                if (name.indexOf(search) === -1) {
+                    eTr.style.display = "none";
+                } else {
+                    eTr.style.display = "table-row";
+                }
+            }
         });
-
-        function empty_table_content() {
-            while (eTable.childElementCount > 1) {
-                eTable.removeChild(eTable.lastElementChild);
-            }
-        }
-
-        function fill_data_into_table() {
-            for (let item of items) {
-                if (item[2].indexOf(search) === -1) continue;
-                let game = new Game(item);
-                let eTr = document.createElement("tr");
-                eTr.innerHTML = (
-                    `<td>${game.name}</td>` +
-                    `<td><a href="${game.link}" target="_blank">${game.link}</a></td>` +
-                    `<td>${game.code}</td>` +
-                    `<td>${game.pswd}</td>` + `\n`
-                );
-                eTable.appendChild(eTr);
-            }
-        }
 
         function Game(item) {
             this.name = item[2];
