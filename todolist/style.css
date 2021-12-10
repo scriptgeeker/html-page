@@ -48,11 +48,11 @@ body{
         width: 60px;
         color: #ffffff;
         font-size: 13px;
-        background: none;
+        background: #000000;
         order: 1;
     }
     select.change-view>option{
-        color: #000000;
+        color: #ffffff;
     }
     button.new-task{
         width: 30px;
