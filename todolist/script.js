@@ -43,30 +43,27 @@ let vm = new Vue({
             this.inputTask = JSON.parse(JSON.stringify(task));
             this.footer.class = ['footer', 'show'];
             this.footer.style = { 'z-index': '99' };
-        },
-        showTask: function (isComplete) { // 是否展示
-            switch (this.changeView) {
-                case 'all': {
-                    return true;
-                }
-                case 'done': {
-                    return isComplete ? true : false;
-                }
-                case 'doing': {
-                    return isComplete ? false : true;
-                }
-            }
-            return false;
+            /* 添加一条历史记录 */
+            history.pushState(null, null, location.href);
         },
         mainView: function () { // 回到主页面
             this.footer.class = ['footer'];
             setTimeout(() => {
                 this.footer.style = { 'z-index': '-99' };
             }, 500);
+            /* 返回上一个历史记录 */
+            window.history.back();
         },
-        selTaskType: function (event) { // 选择任务类型
-            let ele = event.target;
+        selTaskType: function (evt) { // 选择任务类型
+            let ele = evt.target;
+            if (ele.tagName === 'SPAN') {
+                ele = ele.parentElement;
+            }
             if (ele.tagName === 'DIV') {
+                ele = ele.parentElement;
+            }
+            if (ele.tagName === 'LI') {
+                ele = ele.firstElementChild;
                 let type = parseInt(ele.className.slice(-1));
                 this.inputTask.type = type;
             }
@@ -97,8 +94,8 @@ let vm = new Vue({
             }
             this.mainView();
         },
-        taskBoxClick: function (event) {
-            let ele = event.target;
+        taskBoxClick: function (evt) { // 任务列表点击事件
+            let ele = evt.target;
             if (ele.tagName === 'SPAN') {
                 ele = ele.parentElement;
             }
@@ -127,7 +124,21 @@ let vm = new Vue({
             let hh = ('00' + date.getHours()).slice(-2);
             let mm = ('00' + date.getMinutes()).slice(-2);
             return (YYYY + '/' + MM + '/' + DD + ' ' + hh + ':' + mm);
-        }
+        },
+        showTask: function (isComplete) { // 是否展示
+            switch (this.changeView) {
+                case 'all': {
+                    return true;
+                }
+                case 'done': {
+                    return isComplete ? true : false;
+                }
+                case 'doing': {
+                    return isComplete ? false : true;
+                }
+            }
+            return false;
+        },
     },
     mounted: function () {
         localforage.getItem('task-list').then(data => { // 加载任务队列
@@ -136,7 +147,20 @@ let vm = new Vue({
                 this.taskQueue = data.slice(0, MAX_SIZE);
             }
         });
+        /* 桌面端交互优化 - 回车自动保存 */
+        let input = document.querySelector('.former>div>input');
+        input.addEventListener('keypress', evt => {
+            if (evt.keyCode === 13) {
+                this.saveTask();
+            }
+        });
+        /* 移动端交互优化 - 返回键切换视图 */
+        window.addEventListener('popstate', evt => {
+            this.mainView();
+        }, false);
     },
 });
 
 // localforage.clear();
+
+let app = document.getElementById('app');

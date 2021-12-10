@@ -114,20 +114,20 @@ body{
         height: 50%;
     }
     .box-1{
-        background-color: #f4433633;
+        background-color: #fdd9d7;
     }.box-2{
-        background-color: #ff980033;
+        background-color: #ffeacc;
     }.box-3{
-        background-color: #03a9f433;
+        background-color: #cdeefd;
     }.box-4{
-        background-color: #8bc34a33;
+        background-color: #e8f3db;
     }
     .task-box.box-1,
     .task-box.box-3{
-        border-right: 2px solid #fff;
+        border-right: 1px solid #fff;
     }.task-box.box-3,
     .task-box.box-4{
-        border-top: 2px solid #fff;
+        border-top: 1px solid #fff;
     }
 }
 
@@ -451,13 +451,13 @@ body{
 }
 
 .input-task.task-1{
-    background-color: #f443364d;
+    background-color: #fdd9d7;
 }.input-task.task-2{
-    background-color: #ff98004d;
+    background-color: #ffeacc;
 }.input-task.task-3{
-    background-color: #03a9f44d;
+    background-color: #cdeefd;
 }.input-task.task-4{
-    background-color: #8bc34a4d;
+    background-color: #e8f3db;
 }
 
 .former>.input-task>input{
