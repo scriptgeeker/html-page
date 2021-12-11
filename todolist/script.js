@@ -51,16 +51,12 @@ let vm = new Vue({
             this.inputTask = JSON.parse(JSON.stringify(task));
             this.footer.class = ['footer', 'show'];
             this.footer.style = { 'z-index': '99' };
-            /* 添加一条历史记录 */
-            history.pushState(null, null, location.href + '/index.html');
         },
         mainView: function () { // 回到主页面
             this.footer.class = ['footer'];
             setTimeout(() => {
                 this.footer.style = { 'z-index': '-99' };
             }, 500);
-            /* 返回上一个历史记录 */
-            window.history.back();
         },
         selTaskType: function (evt) { // 选择任务类型
             let ele = evt.target;
@@ -170,8 +166,19 @@ let vm = new Vue({
             }
         });
         /* 移动端交互优化 - 返回键切换视图 */
+        let onEditTaskView = false;
+        let newtsk = document.querySelector('div.new-task');
+        newtsk.addEventListener('click', evt => {
+            if (onEditTaskView === false) {
+                history.pushState(null, null, location.href);
+                onEditTaskView = true;
+            }
+        });
         window.addEventListener('popstate', evt => {
-            this.mainView();
+            if (onEditTaskView === true) {
+                this.mainView();
+                onEditTaskView = false;
+            }
         }, false);
         /* 点击文档隐藏所有下拉选框 */
         document.addEventListener('click', evt => {
