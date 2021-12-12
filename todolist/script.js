@@ -12,6 +12,7 @@ let vm = new Vue({
             remark: '',
         },
         taskQueue: [], // 任务队列
+        historyLength: 1,
     },
     computed: {
         currentDate: function () { // 显示当前日期
@@ -48,6 +49,10 @@ let vm = new Vue({
             }
         },
         editTask: function (task) { // 编辑任务
+            if (this.historyLength <= 1) {
+                history.pushState(null, null, location.href);
+                this.historyLength++;
+            }
             this.inputTask = JSON.parse(JSON.stringify(task));
             this.footer.class = ['footer', 'show'];
             this.footer.style = { 'z-index': '99' };
@@ -166,19 +171,9 @@ let vm = new Vue({
             }
         });
         /* 移动端交互优化 - 返回键切换视图 */
-        let onEditTaskView = false;
-        let newtsk = document.querySelector('div.new-task');
-        newtsk.addEventListener('click', evt => {
-            if (onEditTaskView === false) {
-                history.pushState(null, null, location.href);
-                onEditTaskView = true;
-            }
-        });
         window.addEventListener('popstate', evt => {
-            if (onEditTaskView === true) {
-                this.mainView();
-                onEditTaskView = false;
-            }
+            this.mainView();
+            this.historyLength--;
         }, false);
         /* 点击文档隐藏所有下拉选框 */
         document.addEventListener('click', evt => {
