@@ -1,0 +1,184 @@
+* {
+    padding: 0;
+    margin: 0;
+    user-select: none;
+    box-sizing: border-box;
+}
+
+.hidden {
+    display: none;
+}
+
+body {
+    background-color: #f0f0f0;
+}
+
+.apps {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.apps > div {
+    background-color: #ffffff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.18);
+}
+
+/*左侧拼图样式*/
+
+.puzzle {
+    padding: 10px;
+}
+
+.puzzle .frame {
+    position: relative;
+}
+
+/*滑块的动画效果*/
+
+.puzzle .frame > div {
+    border: 2px solid #fff;
+    background-origin: border-box;
+    background-repeat: no-repeat;
+    transition-property: top, left, border, opacity;
+    transition-duration: 250ms, 250ms, 500ms, 500ms;
+    transition-delay: 0ms, 0ms, 250ms, 250ms;
+    /*transition: top 250ms, left 250ms,*/
+    /*border 500ms 250ms, opacity 500ms 250ms;*/
+    position: absolute;
+}
+
+.puzzle .frame > div:last-child {
+    opacity: 0;
+}
+
+.puzzle .frame.completed > div {
+    border-color: rgba(255, 255, 255, 0);
+}
+
+.puzzle .frame.completed > div:last-child {
+    opacity: 1;
+}
+
+/*右侧面板样式*/
+
+.panel {
+    width: 270px;
+    height: 300px;
+    padding: 10px;
+    margin: 0 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.panel .head {
+    color: #666;
+    font-size: 15px;
+}
+
+.panel .select {
+    margin-top: 10px;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+}
+
+.panel .select > div {
+    width: 70px;
+    height: 40px;
+    color: #444;
+    font-size: 14px;
+    text-align: center;
+    line-height: 40px;
+    border: 1px solid #e5e5e5;
+    transition: background-color 250ms;
+    cursor: pointer;
+}
+
+/*选择按钮过渡效果*/
+
+.panel .select > div.active {
+    color: #fff;
+    border: none;
+    background-color: #1e87f0;
+}
+
+.panel .select > div:hover {
+    color: #222;
+    border-color: #b2b2b2;
+    background: #f0f0f0;
+}
+
+.panel .select > div.active:hover {
+    font-size: 0;
+    border: none;
+    background: #ee395b;
+}
+
+.panel .select > div.active:hover:after {
+    content: "重置";
+    color: #fff;
+    font-size: 14px;
+}
+
+/*游戏计时器样式*/
+
+.panel .timer {
+    height: 80px;
+    color: #444;
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 80px;
+    text-align: center;
+    font-family: Consolas, serif;
+}
+
+.panel .tips {
+    height: 80px;
+    color: #666;
+    padding: 10px;
+    font-size: 13px;
+    line-height: 20px;
+    background: #f8f8f8;
+}
+
+.panel .upload .button {
+    height: 40px;
+    font-size: 14px;
+    line-height: 40px;
+    text-align: center;
+    color: #1e87f0;
+    margin-top: 10px;
+    border: 1px solid #1e87f0;
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

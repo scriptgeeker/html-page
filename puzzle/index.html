@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>趣味拼图游戏</title>
+    <link rel="stylesheet" href="style.css">
+    <style class="variable"></style>
+</head>
+<body>
+    <div class="apps">
+        <div class="puzzle">
+            <img class="hidden" src="image.jpg" alt="Jigsaw puzzle">
+            <div class="frame" style="width: 600px"></div>
+        </div>
+        <div class="panel">
+            <div class="head">选择难度</div>
+            <div class="select">
+                <div data-level="2" class="active">简单</div>
+                <div data-level="3">普通</div>
+                <div data-level="4">困难</div>
+            </div>
+            <div class="timer">0.00</div>
+            <div class="tips">
+                目标：移动方块完成拼图<br>
+                控制：方向键或鼠标操作<br>
+                开始：按任意键开始计时
+            </div>
+            <div class="upload">
+                <div class="button">上传自定义图片</div>
+                <input class="hidden" type="file" accept="image/jpeg">
+            </div>
+        </div>
+    </div>
+<script src="script.js"></script>
+</body>
+</html>

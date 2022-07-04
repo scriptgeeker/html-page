@@ -35,3 +35,8 @@ Static web page display
 
 > https://scriptgeeker.github.io/html-page/todolist/index.html
 
+## 拼图
+
+**趣味拼图 - 九宫格拼图**
+
+> https://scriptgeeker.github.io/html-page/puzzle/index.html
