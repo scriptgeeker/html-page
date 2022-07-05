@@ -37,10 +37,9 @@ const APPS = {
         ELE.frame.className = "frame";
         ELE.timer.textContent = "0.00";
         for (let i = 0; i < (this.level * this.level); i++) {
-            // let ele = document.createElement("div")
-            // ele.className = "position-" + i;
-            // ELE.frame.appendChild(ele);
-            ELE.frame.appendChild(document.createElement("div"));
+            let ele = document.createElement("div");
+            ele.className = "position-" + i;
+            ELE.frame.appendChild(ele);
         }
         this.setBlockStyle();
         this.shuffleBlock();
@@ -53,25 +52,27 @@ const APPS = {
         let blockWidth = this.width / this.level;
         let blockHeight = this.height / this.level;
         style += (
-            ".frame > div {\n"
-            + "width: " + blockWidth + "px;\n"
-            + "height: " + blockHeight + "px;\n"
-            + "background-image: url(\"" + this.image + "\");\n"
-            + "background-size: " + (this.level * 100) + "%;\n"
-            + "}\n\n"
+            ".frame>div{"
+            + "width:" + blockWidth + "px;"
+            + "height:" + blockHeight + "px;"
+            + "background-image:url('" + this.image + "');"
+            + "background-size:" + (this.level * 100) + "%;"
+            + "}\n"
         );
         for (let i = 0; i < (this.level * this.level); i++) {
             style += (
-                ".frame > div.position-" + i + "{\n"
-                + "left: " + (Math.floor(i % this.level) * blockWidth) + "px;\n"
-                + "top: " + (Math.floor(i / this.level) * blockHeight) + "px;\n"
-                + "}\n\n"
+                ".frame>div.position-" + i + "{"
+                + "left:" + (Math.floor(i % this.level) * blockWidth) + "px;"
+                + "top:" + (Math.floor(i / this.level) * blockHeight) + "px;"
+                + "}\n"
             );
+        }
+        for (let i = 0; i < (this.level * this.level); i++) {
             style += (
-                ".frame > div:nth-child(" + (i + 1) + "){\n"
-                + "background-position-x: -" + (Math.floor(i % this.level) * blockWidth) + "px;\n"
-                + "background-position-y: -" + (Math.floor(i / this.level) * blockHeight) + "px;\n"
-                + "}\n\n"
+                ".frame>div:nth-child(" + (i + 1) + "){"
+                + "background-position-x:-" + (Math.floor(i % this.level) * blockWidth) + "px;"
+                + "background-position-y:-" + (Math.floor(i / this.level) * blockHeight) + "px;"
+                + "}\n"
             );
         }
         ELE.style.innerHTML = style;
@@ -87,21 +88,22 @@ const APPS = {
         this.shuffleArray(array);
         let elements = ELE.frame.querySelectorAll("div");
         for (let i = 0; i < elements.length; i++) {
-            elements[i].className = "position-" + array[i];
+            elements[array[i]].className = "position-" + i;
         }
     },
     /**
      * 轮换算法打乱数组
      */
     shuffleArray: function (array) {
-        for (let i = 0; i < array.length; i++) {
-            for (let j = 0; j < Math.pow(2, this.level); j++) {
-                let a = 0, b = 0;
-                while (a === b) {
-                    a = Math.floor(Math.random() * (array.length - 1));
-                    b = Math.floor(Math.random() * (array.length - 1));
+        for (let n = 0; n < Math.pow(2, this.level); n++) { // 必须为偶数次轮换
+            for (let i = 0; i < (array.length - 1); i++) { // 依次与任意非空块交换
+                let j = i;
+                while (i === j) {
+                    j = Math.floor(Math.random() * (array.length - 1));
                 }
-                [array[a], array[b]] = [array[b], array[a]]; // 交换值
+                let temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
             }
         }
         let sorted = array.slice().sort();
@@ -131,7 +133,7 @@ const APPS = {
     moveBlock: function (offset) {
         let blank = ELE.frame.querySelector("div:last-child");
         let index = parseInt(blank.className.slice(9));
-        if (0 <= (index + offset) < (this.level * this.level)) {
+        if (0 <= (index + offset) && (index + offset) < (this.level * this.level)) {
             if (offset === 1 || offset === -1) {
                 let curLine = Math.floor(index / this.level);
                 let newLine = Math.floor((index + offset) / this.level);
@@ -140,7 +142,9 @@ const APPS = {
                 }
             }
             let block = ELE.frame.querySelector("div.position-" + (index + offset));
-            [blank.className, block.className] = [block.className, blank.className];
+            let className = blank.className;
+            blank.className = block.className;
+            block.className = className;
         }
     },
     /**
