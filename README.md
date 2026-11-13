@@ -40,3 +40,9 @@ Static web page display
 **趣味拼图 - 九宫格拼图**
 
 > https://scriptgeeker.github.io/html-page/puzzle/index.html
+
+## Vibe Coding
+
+**盐线行动 - 中文汉化版**
+
+> https://scriptgeeker.github.io/html-page/saltline/index.html
